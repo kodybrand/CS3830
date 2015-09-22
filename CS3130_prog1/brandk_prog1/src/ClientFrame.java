@@ -41,7 +41,7 @@ public class ClientFrame extends javax.swing.JFrame {
 
         jLabel1.setText("IP Address");
 
-        txtIP.setText("io.uwplatt.edu");
+        txtIP.setText("localhost");
 
         txtPort.setText("5764");
 

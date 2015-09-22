@@ -100,7 +100,7 @@
     </Component>
     <Component class="javax.swing.JTextField" name="txtIP">
       <Properties>
-        <Property name="text" type="java.lang.String" value="io.uwplatt.edu"/>
+        <Property name="text" type="java.lang.String" value="localhost"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JTextField" name="txtPort">
