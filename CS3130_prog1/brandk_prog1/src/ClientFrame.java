@@ -3,14 +3,16 @@
  *
  * @author Kody
  */
-public class ClientFrame extends javax.swing.JFrame {
+public class ClientFrame extends javax.swing.JFrame
+{
 
     private KnockKnockClient kkc = null;
 
     /**
      * Creates new form ClientFrame
      */
-    public ClientFrame() {
+    public ClientFrame()
+    {
         initComponents();
     }
 
@@ -139,7 +141,8 @@ public class ClientFrame extends javax.swing.JFrame {
      * @param evt
      */
     private void btnConnectActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConnectActionPerformed
-        if (kkc == null) {
+        if (kkc == null)
+        {
             kkc = new KnockKnockClient();
         }
 
@@ -151,24 +154,31 @@ public class ClientFrame extends javax.swing.JFrame {
 
     /**
      * Action when Send button is pressed.
+     *
      * @param evt
      */
     private void btnSendActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSendActionPerformed
-        if (kkc != null && kkc.sock.isConnected()) {
+        if (kkc != null && kkc.sock.isConnected())
+        {
             txtCommunication.append("Client : " + txtMessage.getText() + "\n");
-            if (kkc != null || !kkc.isConnected()) {
+            if (kkc != null || !kkc.isConnected())
+            {
                 String response = kkc.sendAndRead(txtMessage.getText());
-                if( response.contains("Error :")) {
+                if (response.contains("Error :"))
+                {
                     txtCommunication.append(response);
-                } else {
+                } else
+                {
                     txtCommunication.append("Server : " + response);
                 }
-            } else {
+            } else
+            {
                 txtCommunication.append("Error : You must connect First! \n");
             }
             txtMessage.setText("");
             setConBtn();
-        } else {
+        } else
+        {
             txtCommunication.append("Error : You must connect First! \n");
         }
 
@@ -178,11 +188,14 @@ public class ClientFrame extends javax.swing.JFrame {
      * Checks to see if the socket is connected and changes the Connection
      * button.
      */
-    private void setConBtn() {
-        if (kkc.isConnected()) {
+    private void setConBtn()
+    {
+        if (kkc.isConnected())
+        {
             btnConnect.setText("Disconnect");
         }
-        if (kkc.sock.isClosed()) {
+        if (kkc.sock.isClosed())
+        {
             btnConnect.setText("Connect");
         }
     }
@@ -190,33 +203,43 @@ public class ClientFrame extends javax.swing.JFrame {
     /**
      * @param args the command line arguments
      */
-    public static void main(String args[]) {
+    public static void main(String args[])
+    {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
          */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
+        try
+        {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels())
+            {
+                if ("Nimbus".equals(info.getName()))
+                {
                     javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
-        } catch (ClassNotFoundException ex) {
+        } catch (ClassNotFoundException ex)
+        {
             java.util.logging.Logger.getLogger(ClientFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
+        } catch (InstantiationException ex)
+        {
             java.util.logging.Logger.getLogger(ClientFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
+        } catch (IllegalAccessException ex)
+        {
             java.util.logging.Logger.getLogger(ClientFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
+        } catch (javax.swing.UnsupportedLookAndFeelException ex)
+        {
             java.util.logging.Logger.getLogger(ClientFrame.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
+        java.awt.EventQueue.invokeLater(new Runnable()
+        {
+            public void run()
+            {
                 new ClientFrame().setVisible(true);
             }
         });
