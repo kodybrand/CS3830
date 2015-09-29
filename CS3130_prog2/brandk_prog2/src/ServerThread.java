@@ -3,7 +3,8 @@ import java.io.*;
 import java.net.*;
 
 /**
-This class handles the requests for a particular client.
+ This class handles the requests for a particular client.
+
  @author Kody
  */
 public class ServerThread extends Thread
@@ -15,10 +16,11 @@ public class ServerThread extends Thread
    private Logger log;
 
    /**
-   Contructor for this class
-   @param sock Socket to listen to
-   @param log Log to print logs to
-   */
+    Contructor for this class
+
+    @param sock Socket to listen to
+    @param log Log to print logs to
+    */
    public ServerThread(Socket sock, Logger log)
    {
       this.log = log;
@@ -36,8 +38,8 @@ public class ServerThread extends Thread
    }
 
    /**
-   This method accepts incoming stream and returns encoded messages.
-   */
+    This method accepts incoming stream and returns encoded messages.
+    */
    @Override
    public void run()
    {
@@ -47,28 +49,31 @@ public class ServerThread extends Thread
          boolean quitTime = false;
          while (!quitTime)
          {
-            String inLine = readSock.readLine();
-            if (inLine.equalsIgnoreCase("quit"))
+            if (!sock.isClosed())
             {
-               quitTime = true;
+               String inLine = readSock.readLine();
+               if (inLine.equalsIgnoreCase("quit"))
+               {
+                  quitTime = true;
+               }
+               else
+               {
+                  String outLine = pa.encode(inLine);
+                  writeSock.println(outLine);
+               }
             }
             else
             {
-               String outLine = pa.encode(inLine);
-               writeSock.println(outLine);
+               quitTime = true;
             }
          }
          writeSock.println("Good Bye!");
          sock.close();
-         log.print("Connection Closed. Port " + sock.getPort());
-      }
-      catch (SocketTimeoutException e)
-      {
-         log.print("ERROR : " + e);
+         log.print("\tConnection Closed. Port " + sock.getPort());
       }
       catch (Exception e)
       {
-         log.print("ERROR : " + e);
+         log.print("\tConnection Closed. Port " + sock.getPort());
       }
 
    }

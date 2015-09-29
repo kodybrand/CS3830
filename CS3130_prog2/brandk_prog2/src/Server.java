@@ -27,7 +27,8 @@ public class Server
          while (true)
          {
             Socket sock = servSock.accept();
-            log.print(date + " | Connected from " + sock.getInetAddress()
+            log.print("\t" + date + " | Connected from " 
+                  + sock.getInetAddress()
                   + " Port: " + sock.getPort());
             ServerThread servThread = new ServerThread(sock, log);
             servThread.start();
@@ -35,11 +36,11 @@ public class Server
       }
       catch (ConnectException e)
       {
-         log.print("ERROR : " + e);
+         log.print("\tERROR : " + e);
       }
       catch (Exception e)
       {
-         log.print("ERROR : " + e);
+         log.print("\tERROR : " + e);
       }
 
    }

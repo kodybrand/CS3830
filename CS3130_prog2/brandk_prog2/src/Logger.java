@@ -17,7 +17,7 @@ public class Logger
    */
    public Logger()
    {
-
+      print("\n\nLogger has been started " );
    }
 
    /**
