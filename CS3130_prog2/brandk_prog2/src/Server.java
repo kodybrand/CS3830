@@ -4,8 +4,9 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- This class is the server. It handles incoming requests and also 
- logs connections.
+ This class is the server. It handles incoming requests and also logs
+ connections.
+
  @author Kody
  */
 public class Server
@@ -17,8 +18,8 @@ public class Server
    String date = sdf.format(new Date());
 
    /**
-   This method starts creates a ServerThread for each client and logs it.
-   */
+    This method starts creates a ServerThread for each client and logs it.
+    */
    public void run()
    {
       try
@@ -27,7 +28,7 @@ public class Server
          while (true)
          {
             Socket sock = servSock.accept();
-            log.print("\t" + date + " | Connected from " 
+            log.print("\t" + date + " | Connected from "
                   + sock.getInetAddress()
                   + " Port: " + sock.getPort());
             ServerThread servThread = new ServerThread(sock, log);

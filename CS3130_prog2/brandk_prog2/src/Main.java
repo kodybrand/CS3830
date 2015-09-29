@@ -1,6 +1,7 @@
 
 /**
  This class starts the server.
+
  @author Kody
  */
 public class Main

@@ -1,6 +1,7 @@
 
 /**
-This class handles the encryption.
+ This class handles the encryption.
+
  @author Kody
  */
 public class PolyAlphabet
@@ -13,10 +14,11 @@ public class PolyAlphabet
    private int location = 0;
 
    /**
-   This method encodes the string using the offsetArray set above.
-   @param enc message to be encoded
-   @return encoded message
-   */
+    This method encodes the string using the offsetArray set above.
+
+    @param enc message to be encoded
+    @return encoded message
+    */
    public String encode(String enc)
    {
       StringBuilder encoded = new StringBuilder();
@@ -44,9 +46,10 @@ public class PolyAlphabet
    }
 
    /**
-   Handles the offset settings
-   @return correct offset for encoding
-   */
+    Handles the offset settings
+
+    @return correct offset for encoding
+    */
    private int getOffset()
    {
       int key = offsetArray[location++];
