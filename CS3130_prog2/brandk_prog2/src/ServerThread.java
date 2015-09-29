@@ -32,11 +32,12 @@ public class ServerThread extends Thread
     {
         try
         {
-            boolean quitTime = false;
+           PolyAlphabet pa = new PolyAlphabet();
+           boolean quitTime = false;
             while (!quitTime)
             {
                 String inLine = readSock.readLine();
-                String outLine = inLine;
+                String outLine = pa.encode(inLine, 5);
                 writeSock.println(outLine);
                 if (inLine.equalsIgnoreCase("quit"))
                 {
