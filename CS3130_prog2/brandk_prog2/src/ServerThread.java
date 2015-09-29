@@ -3,53 +3,73 @@ import java.io.*;
 import java.net.*;
 
 /**
- *
- * @author Kody
+This class handles the requests for a particular client.
+ @author Kody
  */
 public class ServerThread extends Thread
 {
 
-    private PrintWriter writeSock;
-    private BufferedReader readSock;
-    private Socket sock;
+   private PrintWriter writeSock;
+   private BufferedReader readSock;
+   private Socket sock;
+   private Logger log;
 
-    public ServerThread(Socket sock)
-    {
-        this.sock = sock;
-        try
-        {
-            writeSock = new PrintWriter(sock.getOutputStream(), true);
-            readSock = new BufferedReader(new InputStreamReader(
-                    sock.getInputStream()));
-        } catch (Exception e)
-        {
-            System.out.println("ERROR : " + e.getClass().toString() + e);
-        }
-    }
+   /**
+   Contructor for this class
+   @param sock Socket to listen to
+   @param log Log to print logs to
+   */
+   public ServerThread(Socket sock, Logger log)
+   {
+      this.log = log;
+      this.sock = sock;
+      try
+      {
+         writeSock = new PrintWriter(sock.getOutputStream(), true);
+         readSock = new BufferedReader(new InputStreamReader(
+               sock.getInputStream()));
+      }
+      catch (Exception e)
+      {
+         log.print("ERROR : " + e.getClass().toString() + e);
+      }
+   }
 
-    @Override
-    public void run()
-    {
-        try
-        {
-           PolyAlphabet pa = new PolyAlphabet();
-           boolean quitTime = false;
-            while (!quitTime)
+   /**
+   This method accepts incoming stream and returns encoded messages.
+   */
+   @Override
+   public void run()
+   {
+      try
+      {
+         PolyAlphabet pa = new PolyAlphabet();
+         boolean quitTime = false;
+         while (!quitTime)
+         {
+            String inLine = readSock.readLine();
+            if (inLine.equalsIgnoreCase("quit"))
             {
-                String inLine = readSock.readLine();
-                String outLine = pa.encode(inLine);
-                writeSock.println(outLine);
-                if (inLine.equalsIgnoreCase("quit"))
-                {
-                    quitTime = true;
-                }
+               quitTime = true;
             }
-            writeSock.println("Good Bye!");
-            sock.close();
-        } catch (Exception e)
-        {
-            System.out.println("ERROR : " + e.getClass().toString() + e);
-        }
+            else
+            {
+               String outLine = pa.encode(inLine);
+               writeSock.println(outLine);
+            }
+         }
+         writeSock.println("Good Bye!");
+         sock.close();
+         log.print("Connection Closed. Port " + sock.getPort());
+      }
+      catch (SocketTimeoutException e)
+      {
+         log.print("ERROR : " + e);
+      }
+      catch (Exception e)
+      {
+         log.print("ERROR : " + e);
+      }
 
-    }
+   }
 }
