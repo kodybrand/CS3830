@@ -37,7 +37,7 @@ public class ServerThread extends Thread
             while (!quitTime)
             {
                 String inLine = readSock.readLine();
-                String outLine = pa.encode(inLine, 5);
+                String outLine = pa.encode(inLine);
                 writeSock.println(outLine);
                 if (inLine.equalsIgnoreCase("quit"))
                 {
