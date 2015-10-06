@@ -11,6 +11,7 @@ public class Main
       try
       {
          WebServer web = new WebServer();
+         web.run();
       }
       catch (Exception e)
       {

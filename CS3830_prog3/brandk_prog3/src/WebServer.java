@@ -9,7 +9,7 @@ import java.net.Socket;
 public class WebServer 
 {
 
-   private static int PORT = 5764;
+   private static final int PORT = 5764;
    
    public WebServer() {
       
@@ -19,9 +19,11 @@ public class WebServer
       try {
          ServerSocket servSock = new ServerSocket(PORT);
          while(true) {
+            System.out.println("HERE! WebServer");
             Socket sock = servSock.accept();
             HTTPRequest request = new HTTPRequest(sock);
             request.start();
+            System.out.println("HERE! WebServer");
          }
       } catch (Exception e) {
          System.out.println("Error : " + e );
