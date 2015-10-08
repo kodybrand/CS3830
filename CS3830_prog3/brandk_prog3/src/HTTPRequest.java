@@ -37,39 +37,48 @@ public class HTTPRequest extends Thread
    @Override
    public void start()
    {
-      try {
+      try
+      {
          http = new HTTP(readSock.readLine());
          writeSock.print(buildStatus());
-         System.out.print(buildStatus());
          writeSock.print(buildHeader());
-         System.out.print(buildHeader());
+         sendBody();
          sock.close();
-      } catch (Exception e) {
-         System.out.println(e);
       }
-      
+      catch (Exception e)
+      {
+         System.out.println("Error : " + e);
+      }
+
    }
-   
-   private String buildStatus() {
+
+   private String buildStatus()
+   {
       String response = VERSION;
       response = response + getStatus() + CRLF;
-      
+
       return response;
    }
-   
-   private String getStatus() {
-      if(http.isFileValid()) {
+
+   private String getStatus()
+   {
+      if (http.isFileValid())
+      {
          return "200 OK ";
-      } else {
+      }
+      else
+      {
          return "404 Not Found ";
       }
    }
-   
-   private String buildHeader() {
+
+   private String buildHeader()
+   {
       return "Content-type: " + http.getContentType();
    }
-   
-   private void sendBody() {
-      
+
+   private void sendBody()
+   {
+      http.sendBody(sock);
    }
 }

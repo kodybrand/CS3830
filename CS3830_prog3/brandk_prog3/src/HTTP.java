@@ -13,62 +13,92 @@ public class HTTP
 {
 
    private static final int CHUNK_SIZE = 1024;
-   
-   private String method;
+
    private String url;
-   
-   private Socket sock;
+   private boolean fileFound = true;
+
    private FileInputStream fis;
    private OutputStream os;
 
    public HTTP(String request)
    {
       parseRequest(request);
-      System.out.println("Method : " + method);
-      System.out.println("Url : " + url);
    }
-   
-   public boolean isFileValid() {
-      try{
+
+   public boolean isFileValid()
+   {
+      try
+      {
          fis = new FileInputStream(url);
-      } catch (FileNotFoundException fe) {
+      }
+      catch (FileNotFoundException fe)
+      {
+         fileFound = false;
          return false;
       }
       return true;
    }
-   
-   public String getContentType() {
-      if(url.endsWith(".html") || url.endsWith(".htm") ) {
+
+   public String getContentType()
+   {
+      if (url.endsWith(".html") || url.endsWith(".htm"))
+      {
          return "text/html";
       }
-      if(url.endsWith(".gif")) {
+      if (url.endsWith(".gif"))
+      {
          return "image/gif";
       }
-      if(url.endsWith(".jpg") || url.endsWith(".jpeg") ) {
+      if (url.endsWith(".jpg") || url.endsWith(".jpeg"))
+      {
          return "image/jpeg";
       }
-      if(url.endsWith(".bmp")) {
+      if (url.endsWith(".bmp"))
+      {
          return "image/bmp";
       }
       return "application/octet-stream";
    }
-   
-   public boolean sendBody(Socket sock) {
-      this.sock = sock;
-      byte[] buffer = new byte[CHUNK_SIZE];
-      buffer = fis.read(buffer);
-      
-      
-      
+
+   public boolean sendBody(Socket sock)
+   {
+      try
+      {
+         os = sock.getOutputStream();
+         byte[] buffer = new byte[CHUNK_SIZE];
+         int bytes = 0;
+         if (fileFound)
+         {
+            while ((bytes = fis.read(buffer)) != -1)
+            {
+               os.write(buffer, 0, bytes);
+            }
+         }
+         else
+         {
+            String entityBody = "<HTML>"
+                  + "<HEAD><TITLE>Not Found</TITLE></HEAD>"
+                  + "<BODY>Not Found</BODY></HTML>";
+            byte[] b = entityBody.getBytes();
+            os.write(b);
+         }
+      }
+      catch (Exception e)
+      {
+         System.out.println(e);
+      }
       return true;
    }
-   
-   private void parseRequest(String request) {
+
+   private void parseRequest(String request)
+   {
       StringTokenizer st = new StringTokenizer(request);
-      if(st.hasMoreTokens()) {
-         this.method = st.nextToken();
+      if (st.hasMoreTokens())
+      {
+         st.nextToken();
       }
-      if(st.hasMoreTokens()) {
+      if (st.hasMoreTokens())
+      {
          this.url = "." + st.nextToken();
       }
    }
