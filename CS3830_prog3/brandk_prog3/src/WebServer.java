@@ -19,11 +19,9 @@ public class WebServer
       try {
          ServerSocket servSock = new ServerSocket(PORT);
          while(true) {
-            System.out.println("HERE! WebServer");
             Socket sock = servSock.accept();
             HTTPRequest request = new HTTPRequest(sock);
             request.start();
-            System.out.println("HERE! WebServer");
          }
       } catch (Exception e) {
          System.out.println("Error : " + e );

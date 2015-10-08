@@ -1,6 +1,8 @@
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.OutputStream;
+import java.net.Socket;
 import java.util.StringTokenizer;
 
 /**
@@ -10,109 +12,65 @@ import java.util.StringTokenizer;
 public class HTTP
 {
 
+   private static final int CHUNK_SIZE = 1024;
+   
    private String method;
    private String url;
-   private String version;
-
-   private boolean validMethod;
-   private boolean validFile;
-   private boolean validVersion;
+   
+   private Socket sock;
+   private FileInputStream fis;
+   private OutputStream os;
 
    public HTTP(String request)
    {
-      System.out.println("HERE! HTTP");
       parseRequest(request);
-      System.out.println("request info ::" + request);
+      System.out.println("Method : " + method);
+      System.out.println("Url : " + url);
    }
-
-   public boolean isValid()
-   {
-      if (!validRequest())
-      {
-         return false;
-      }
-      if (!validUrl())
-      {
-         return false;
-      }
-      return validVersion();
-   }
-
-   private void parseRequest(String request)
-   {
-      StringTokenizer st = new StringTokenizer(request);
-      if (st.hasMoreTokens())
-      {
-         this.method = st.nextToken();
-      }
-      if (st.hasMoreTokens())
-      {
-         this.url = "." + st.nextToken();
-      }
-      if (st.hasMoreTokens())
-      {
-         this.version = st.nextToken();
-      }
-   }
-
-   private boolean validRequest()
-   {
-      return method.equalsIgnoreCase("GET");
-   }
-
-   private boolean validUrl()
-   {
-      try
-      {
-         FileInputStream fi = new FileInputStream(url);
-      }
-      catch (FileNotFoundException e)
-      {
+   
+   public boolean isFileValid() {
+      try{
+         fis = new FileInputStream(url);
+      } catch (FileNotFoundException fe) {
          return false;
       }
       return true;
    }
-
-   private boolean validVersion()
-   {
-      return version.equalsIgnoreCase("HTTP/1.1");
-   }
-
-   private boolean validMethod()
-   {
-      return method.equalsIgnoreCase("GET");
-   }
-
-   public String getMethod()
-   {
-      return method;
-   }
-
-   public String getUrl()
-   {
-      return url;
-   }
-
-   public String getVersion()
-   {
-      return version;
-   }
-
-   public boolean isValidMethod()
-   {
-      return validMethod;
-   }
-
-   public boolean isValidFile()
-   {
-      return validFile;
-   }
-
-   public boolean isValidVersion()
-   {
-      return validVersion;
+   
+   public String getContentType() {
+      if(url.endsWith(".html") || url.endsWith(".htm") ) {
+         return "text/html";
+      }
+      if(url.endsWith(".gif")) {
+         return "image/gif";
+      }
+      if(url.endsWith(".jpg") || url.endsWith(".jpeg") ) {
+         return "image/jpeg";
+      }
+      if(url.endsWith(".bmp")) {
+         return "image/bmp";
+      }
+      return "application/octet-stream";
    }
    
+   public boolean sendBody(Socket sock) {
+      this.sock = sock;
+      byte[] buffer = new byte[CHUNK_SIZE];
+      buffer = fis.read(buffer);
+      
+      
+      
+      return true;
+   }
    
+   private void parseRequest(String request) {
+      StringTokenizer st = new StringTokenizer(request);
+      if(st.hasMoreTokens()) {
+         this.method = st.nextToken();
+      }
+      if(st.hasMoreTokens()) {
+         this.url = "." + st.nextToken();
+      }
+   }
 
 }
