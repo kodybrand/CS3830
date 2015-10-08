@@ -30,7 +30,7 @@ public class HTTPRequest extends Thread
       }
       catch (Exception e)
       {
-         System.out.println("Error : " + e);
+         System.out.println("HTTPRequest Exception : " + e);
       }
    }
 
@@ -47,7 +47,7 @@ public class HTTPRequest extends Thread
       }
       catch (Exception e)
       {
-         System.out.println("Error : " + e);
+         System.out.println("HTTPRequest Exception : " + e);
       }
 
    }

@@ -33,6 +33,7 @@ public class HTTP
       }
       catch (FileNotFoundException fe)
       {
+         
          fileFound = false;
          return false;
       }
@@ -69,10 +70,12 @@ public class HTTP
          int bytes = 0;
          if (fileFound)
          {
+            
             while ((bytes = fis.read(buffer)) != -1)
             {
                os.write(buffer, 0, bytes);
             }
+            System.out.println("File sent : " + url);
          }
          else
          {
@@ -81,11 +84,12 @@ public class HTTP
                   + "<BODY>Not Found</BODY></HTML>";
             byte[] b = entityBody.getBytes();
             os.write(b);
+            System.out.println("No file sent");
          }
       }
       catch (Exception e)
       {
-         System.out.println(e);
+         System.out.println("HTTP Exception : " + e);
       }
       return true;
    }

@@ -21,17 +21,19 @@ public class WebServer
       try
       {
          ServerSocket servSock = new ServerSocket(PORT);
+         System.out.println("Server is running... Waiting for requests...");
          while (true)
          {
             Socket sock = servSock.accept();
             HTTPRequest request = new HTTPRequest(sock);
-            request.start();
+            System.out.println("Connection from " + sock.getInetAddress() 
+                  + " on port " + sock.getPort());
+            request.start(); 
          }
       }
       catch (Exception e)
       {
-         System.out.println("Error : " + e);
+         System.out.println("Socket Exception : " + e);
       }
-
    }
 }
