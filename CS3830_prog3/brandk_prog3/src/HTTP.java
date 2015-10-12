@@ -1,7 +1,7 @@
 
+import java.io.DataOutputStream;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.OutputStream;
 import java.net.Socket;
 import java.util.StringTokenizer;
 
@@ -18,7 +18,7 @@ public class HTTP
    private boolean fileFound = true;
 
    private FileInputStream fis;
-   private OutputStream os;
+   private DataOutputStream os;
 
    public HTTP(String request)
    {
@@ -65,7 +65,7 @@ public class HTTP
    {
       try
       {
-         os = sock.getOutputStream();
+         os = new DataOutputStream(sock.getOutputStream());
          byte[] buffer = new byte[CHUNK_SIZE];
          int bytes = 0;
          if (fileFound)

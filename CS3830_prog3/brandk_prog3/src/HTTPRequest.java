@@ -1,7 +1,7 @@
 
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
-import java.io.PrintWriter;
 import java.net.Socket;
 
 /**
@@ -11,11 +11,11 @@ import java.net.Socket;
 public class HTTPRequest extends Thread
 {
 
-   private static String CRLF = "\r\n";
-   private static String VERSION = "HTTP/1.0 ";
+   private final static String CRLF = "\r\n";
+   private final static String VERSION = "HTTP/1.0 ";
 
    private Socket sock;
-   private PrintWriter writeSock;
+   private DataOutputStream writeSock;
    private BufferedReader readSock;
    private HTTP http;
 
@@ -24,7 +24,7 @@ public class HTTPRequest extends Thread
       this.sock = sock;
       try
       {
-         writeSock = new PrintWriter(sock.getOutputStream(), true);
+         writeSock = new DataOutputStream(sock.getOutputStream());
          readSock = new BufferedReader(new InputStreamReader(
                sock.getInputStream()));
       }
@@ -35,14 +35,16 @@ public class HTTPRequest extends Thread
    }
 
    @Override
-   public void start()
+   public void run()
    {
       try
       {
-         http = new HTTP(readSock.readLine());
-         writeSock.print(buildStatus());
-         writeSock.print(buildHeader());
-         sendBody();
+         String input = readSock.readLine();
+         http = new HTTP(input);
+         writeSock.writeBytes(buildStatus()); //Header
+         writeSock.writeBytes(buildHeader()); //Status
+         writeSock.writeBytes(CRLF); //Blank Line
+         sendBody(); //Body
          sock.close();
       }
       catch (Exception e)
@@ -74,7 +76,7 @@ public class HTTPRequest extends Thread
 
    private String buildHeader()
    {
-      return "Content-type: " + http.getContentType();
+      return "Content-type: " + http.getContentType() + CRLF;
    }
 
    private void sendBody()
