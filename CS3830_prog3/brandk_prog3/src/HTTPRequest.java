@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.net.Socket;
 
 /**
+ This handles the communication of the interaction.
 
  @author Kody
  */
@@ -19,6 +20,11 @@ public class HTTPRequest extends Thread
    private BufferedReader readSock;
    private HTTP http;
 
+   /**
+    Contructor that sets up the reader and writer
+
+    @param sock Assigned Socket
+    */
    public HTTPRequest(Socket sock)
    {
       this.sock = sock;
@@ -34,6 +40,9 @@ public class HTTPRequest extends Thread
       }
    }
 
+   /**
+    Method that reads the request and them responds to it.
+    */
    @Override
    public void run()
    {
@@ -54,6 +63,11 @@ public class HTTPRequest extends Thread
 
    }
 
+   /**
+    Builds the Status String
+
+    @return
+    */
    private String buildStatus()
    {
       String response = VERSION;
@@ -62,6 +76,11 @@ public class HTTPRequest extends Thread
       return response;
    }
 
+   /**
+    Builds the Status String
+
+    @return built status string
+    */
    private String getStatus()
    {
       if (http.isFileValid())
@@ -74,11 +93,19 @@ public class HTTPRequest extends Thread
       }
    }
 
+   /**
+    Builds the Header String
+
+    @return built header string
+    */
    private String buildHeader()
    {
       return "Content-type: " + http.getContentType() + CRLF;
    }
 
+   /**
+    Sends the content of the response
+    */
    private void sendBody()
    {
       http.sendBody(sock);

@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.util.StringTokenizer;
 
 /**
+ Manages and contains the http request information
 
  @author Kody
  */
@@ -20,11 +21,21 @@ public class HTTP
    private FileInputStream fis;
    private DataOutputStream os;
 
+   /**
+    Constructor that takes in the raw request
+
+    @param request
+    */
    public HTTP(String request)
    {
       parseRequest(request);
    }
 
+   /**
+    Checks to see if the file is valid
+
+    @return true is valid, else false
+    */
    public boolean isFileValid()
    {
       try
@@ -33,13 +44,18 @@ public class HTTP
       }
       catch (FileNotFoundException fe)
       {
-         
+
          fileFound = false;
          return false;
       }
       return true;
    }
 
+   /**
+    Gets the types of content the request is asking for
+
+    @return Content Type string
+    */
    public String getContentType()
    {
       if (url.endsWith(".html") || url.endsWith(".htm"))
@@ -61,6 +77,12 @@ public class HTTP
       return "application/octet-stream";
    }
 
+   /**
+    Sends the content of the body through the socket
+
+    @param sock socket to send through
+    @return if socket was sent successfully, else false
+    */
    public boolean sendBody(Socket sock)
    {
       try
@@ -70,7 +92,7 @@ public class HTTP
          int bytes = 0;
          if (fileFound)
          {
-            
+
             while ((bytes = fis.read(buffer)) != -1)
             {
                os.write(buffer, 0, bytes);
@@ -85,6 +107,7 @@ public class HTTP
             byte[] b = entityBody.getBytes();
             os.write(b);
             System.out.println("No file sent");
+            return false;
          }
       }
       catch (Exception e)
@@ -94,6 +117,11 @@ public class HTTP
       return true;
    }
 
+   /**
+    Parses out the response
+
+    @param request the raw request string
+    */
    private void parseRequest(String request)
    {
       StringTokenizer st = new StringTokenizer(request);
